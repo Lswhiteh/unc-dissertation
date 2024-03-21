@@ -1,0 +1,43 @@
+\newpage
+\begin{table}[htb]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|}
+\hline
+$B$ = number of tree sequences per batch (batch size)                                                                                           \\
+$T$ = number of trees in a single sequence                                                                                                      \\
+$T’$ = maximum number of trees in a sequence in a given batch, used for padding                                                                 \\
+$N$ = number of nodes in a single tree                                                                                                          \\
+$T×N$ = matrix of trees × nodes comprising all nodes in a single tree sequence (i.e. the number of nodes across all trees in a single sequence) \\
+$F$ = number of node features calculated for each node in the input tree sequence                                                               \\
+$E$ = number of edges in all graphs included in the batch of tree sequences                                                                     \\
+$M$ = the size of the output (the number of classes for classification, or 1 for regression)                                                    \\
+(..., n) = number of features                                                                                                                 \\
+E.g. A shape of $(B, T×N, 4)$ is equivalent to a 3D matrix consisting of a batch $(B)$ of 4 features                                              \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+
+\begin{table}[htb]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+layer & type                          & input shape(s)                                                         & output shape     & activation \\ \hline
+node embedding                                       & Linear                        & $(B, T×N, F)$                                                            & $(B, T×N, 26)$     & none       \\ \hline
+skip                                                 & concatenation                 & \begin{tabular}[c]{@{}l@{}}$(B, T×N, F)$, \\ $(B, T×N, 26)$\end{tabular}   & $(B, T×N, 26+F)$   & none       \\ \hline
+graph convolutions (x6)                              & GATv2Conv                     & \begin{tabular}[c]{@{}l@{}}$(2, E)$, \\ $(B, T×N, 26+F)$\end{tabular}      & $(B, T×N, 26+F)$   & ReLU       \\ \hline
+skip                                                 & concatenation                 & \begin{tabular}[c]{@{}l@{}}$(B, T×N, F)$, \\ $(B, T×N, 26+F)$\end{tabular} & $(B, T×N, 26+2F)$  & none       \\ \hline
+reshape                                              &                               & $(B, T×N, 26+2F)$                                                        & $(B, T, N, 26+2F)$ & none       \\ \hline
+RNN                                                  & GRU (1-layer, unidirectional) & $(B, T, N, 26+2F)$                                                       & $(B, T, 256)$      & none       \\ \hline
+tree-level statistics                                & concatenation                 & \begin{tabular}[c]{@{}l@{}}$(B, T, 12)$, \\ $(B, T, 256)$\end{tabular}     & $(B, T, 268)$      & none       \\ \hline
+reshape and pad sequences                            &                               & $(B, T, 268)$                                                            & $(B, T’, 268)$     & none       \\ \hline
+RNN                                                  & GRU (1-layer, unidirectional) & $(B, T’, 268)$                                                           & $(B, 256)$         & none       \\ \hline
+tree-sequence-level (global) statistics              & concatenation                 & \begin{tabular}[c]{@{}l@{}}$(B, 37)$, \\ $(B, 256)$\end{tabular}           & $(B, 293)$         & none       \\ \hline
+MLP (x2)                                             & Fully-Connected               & $(B, 293)$                                                               & $(B, 256)$         & ReLU       \\ \hline
+output                                               & Fully-Connected               & $(B, 256)$                                                               & $(B, M)$           & none       \\ \hline
+\end{tabular}%
+}
+
+\caption[Graph neural network layers and their input/output shapes and activation functions.]{Graph neural network layers and their input/output shapes and activation functions.}
+
+\end{table}

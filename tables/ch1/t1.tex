@@ -1,0 +1,59 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+\begin{table}[htb]
+\centering
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llll}
+\hline
+\rowcolor[HTML]{F2F5F9} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{F2F5F9}\textbf{Trained on constant}}                    & \multicolumn{1}{l|}{\cellcolor[HTML]{F2F5F9}\textbf{Tested on constant}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{F2F5F9}\textbf{Tested on bottleneck}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{F2F5F9}\textbf{Tested on OoA}}               \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}Sweep AUROC}                                     & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.94}                                      & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.94}                                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.86}                                 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}SDN vs SSV AUROC}                                & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.71}                                      & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.63}                                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.54}                                 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}Sweep AUPR}                                      & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.97}                                      & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.98}                                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.93}                                 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}SDN vs SSV AUPR}                                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.69}                                      & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.58}                                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.51}                                 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}SSV $R^2$}                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.58}                                      & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.78}                                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}-0.41}                                \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}SDN $R^2$}                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.81}                                      & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}0.66}                                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}-0.39}                                \\ \hline
+                                                                                              &                                                                                        &                                                                                          &                                                                                   \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Trained on bottleneck}}    & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Tested on constant}} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Tested on bottleneck}} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Tested on OoA}} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Sweep AUROC}}              & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.93}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.94}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.85}}          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} SDN vs SSV AUROC}}         & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.71}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.63}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.53}}          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Sweep AUPR}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.97}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.98}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.92}}          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} SDN vs SSV AUPR}}          & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.69}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.58}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.51}}          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} SSV $R^2$}} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.43}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.79}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} -0.71}}         \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} SDN $R^2$}} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.78}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.66}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} -0.66}}         \\ \hline
+                                                                                              &                                                                                        &                                                                                          &                                                                                   \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Trained on OoA}}           & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Tested on constant}} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Tested on bottleneck}} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Tested on OoA}} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Sweep AUROC}}              & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.92}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.94}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.86}}          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} SDN vs SSV AUROC}}         & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.68}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.56}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.53}}          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} Sweep AUPR}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.96}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.98}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.93}}          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} SDN vs SSV AUPR}}          & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.64}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.58}}                    & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.51}}          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} SSV $R^2$}} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.48}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.61}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.37}}          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} SDN $R^2$}} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.62}}               & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.63}}                 & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}{\color[HTML]{2A2A2A} 0.44}}          \\ \hline
+\end{tabular}}
+
+\caption{Timesweeper's classification and regression accuracy when trained on properly specified and misspecified demographic models.}
+
+\end{table}

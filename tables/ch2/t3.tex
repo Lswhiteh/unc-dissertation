@@ -1,0 +1,14 @@
+\begin{table}[htb]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+Problem            & Time     & RAM (1 batch) & RAM (1 replicate) & Batch size & Total epochs \\ \hline
+Recombination rate & 0.86 hrs & 3.07 Gb       & 51 Mb             & 60         & 18           \\ \hline
+Introgression      & 0.66 hrs & 3.4 Gb        & 71 Mb             & 48         & 13           \\ \hline
+Sweeps             & 7.1 hrs  & 24.2 Gb       & 605 Mb            & 40         & 18           \\ \hline
+Demography         & 0.85 hrs & 3.5 Gb        & 109 Mb            & 32         & 23           \\ \hline
+\end{tabular}%
+}
+
+\caption[GPU training and approximate RAM usage for the CNN architecture]{GPU training and approximate RAM usage for the CNN architecture. All training times are reported for a single NVIDIA A100 GPU.}
+\end{table}

@@ -1,0 +1,25 @@
+\begin{table}[htb]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|}
+\hline
+Feature              & Description                                                                                                              \\ \hline
+Paired               & Whether the read is single or paired                                                                                     \\ \hline
+Proper\_Pair         & Whether the read pair is mapped in the correct order (first read comes before the second in terms of genome coordinates) \\ \hline
+Is\_Read1\_Unmapped  & Is the first read unmapped                                                                                               \\ \hline
+Is\_Read2\_Unmapped  & Is the second read unmapped                                                                                              \\ \hline
+Is\_Read1\_Rev\_Comp & Is the first read reverse complement of the reference                                                                    \\ \hline
+Is\_Read2\_Rev\_Comp & Is the second read reverse complement of the reference                                                                   \\ \hline
+Is\_First\_Read      & Binary flag for first read                                                                                               \\ \hline
+Is\_Second\_Read     & Binary flag for second read                                                                                              \\ \hline
+Split                & Is the read non-contiguous (suggesting an insertion within the read itself)                                              \\ \hline
+Long\_Insert         & Is the gap between the read pair larger than the 99th percentile of insert lengths across the alignment                  \\ \hline
+Short\_Insert        & Is the gap between the read pair smaller than the 2nd percentile of insert lengths across the alignment                  \\ \hline
+Parallel\_Read       & Do both reads of the read pair align to the same orientation of the genome                                               \\ \hline
+Everted\_Read        & Are the reads in the pair facing away from each other as opposed to towards each other                                   \\ \hline
+Orphan\_Read         & Is this read flagged as paired end but the pair does not align to the reference                                          \\ \hline
+\end{tabular}%
+}
+
+\caption{List of features included in short-read alignment feature respresentation and their description.}
+
+\end{table}
