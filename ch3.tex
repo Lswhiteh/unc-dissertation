@@ -12,7 +12,14 @@ Here we develop and report preliminary benchmarks on a novel genomic representat
 
 \subsection{Data representation}
 
-Here we expand on concepts described in \cite{hillDeepLearningApproach2019}, wherein we propose a summary vector as input features for machine learning models. This representation is composed of many features calculated on a per-base level, such that for a given base the count of reads aligned to that base that have the following qualities are enumerated in Table 3.1. For a given alignment provided as a SAM/BAM file, we first use samtools \cite{danecekTwelveYearsSAMtools2021} to extract plaintext alignment data from a query location using the target chromosome, start, and end of the queried window. For each base pair in the alignment within the query window we calculate the per-base pair sum of all features listed in Table 1 by extracting information from the CIGAR string, bitwise flag, and general alignment information reported by the SAM/BAMfile. We then calculate the mean, standard deviation, median, and interquartile range (IQR) for each statistic across the region, resulting in a concise vector representation of relevant features for a given region of the genome. This process of feature vector conversion is parallelized at the thread level, allowing for fast computation of population-scale feature vectors given a read alignment file.
+Here we expand on concepts described in \cite{hillDeepLearningApproach2019}, wherein we propose a summary vector as input features for machine learning models. This representation is composed of many features calculated on a per-base level, such that for a given base the count of reads aligned to that base that have the following qualities are enumerated in Table 3.1. For a given alignment provided as a SAM/BAM file, we first use samtools \cite{danecekTwelveYearsSAMtools2021} to extract plaintext alignment data from a query location using the target chromosome, start, and end of the queried window. For each base pair in the alignment within the query window we calculate the per-base pair sum of all features listed in Table 1 by extracting information from the CIGAR string, bitwise flag, and general alignment information reported by the SAM/BAMfile. We then calculate the mean, standard deviation, median, and interquartile range (IQR) for each statistic across the region, resulting in a concise vector representation of relevant features for a given region of the genome. This process of feature vector conversion is parallelized at the thread level, allowing for fast computation of population-scale feature vectors given a read alignment file. We find different feature distributions for different SV types, exemplified in Figure \ref{fig:read-dists}.
+
+\begin{figure}
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{figures/ch3/read_type_distribution.pdf}}
+    \caption[Distribution of read flags per structural variant type.]{Distribution of read flags per structural variant type.}
+    \label{fig:read-dists}
+\end{figure}
 
 \input{tables/ch3/t1}
 
@@ -25,14 +32,46 @@ We implemented a random forest classifier \cite{ho1995random} implemented in sci
 
 \subsection{Object detection model and breakpoint identification}
 
-To detect where SVs and their breakpoints occur in a callset we attempted to use an object detection model (https://github.com/ultralytics/yolov5). This is a form of convolutional neural network that draws boundary boxes and classifies each candidate box, allowing for precise identification of an object and its location within an image. The data representation for object detection is similar to that described in Data retrieval and preprocessing, however instead of summing features as summaries we instead represented each feature as a histogram count of the feature, with the minimum and maximum values of each being standardized across the target region. An example feature map for this data type can be seen in Figure 1.1. 
+To detect where SVs and their breakpoints occur in a callset we attempted to use an object detection model (https://github.com/ultralytics/yolov5). This is a form of convolutional neural network that draws boundary boxes and classifies each candidate box, allowing for precise identification of an object and its location within an image. The data representation for object detection is similar to that described in Data retrieval and preprocessing, however instead of summing features as summaries we instead represented each feature as a histogram count of the feature, with the minimum and maximum values of each being standardized across the target region. An example feature map for this data type can be seen in Figure \ref{fig:example_pileup}. 
 
 We attempted two variants of object detection: detecting the entire SV (or in the case of an image not capturing the entire SV, what is present), and identifying breakpoints. In the case of whole-SV detection breakpoints were treated as the left and right bounds for the bounding box values and the entire y-axis was used as the vertical bounds. Bounding box values were scaled relative to 0-1 as described in the YOLOv5 tutorial based on the length of the genomic region represented scaled to a consistent image size of 640 $\times$ 640 pixels. For breakpoint detection we used a 50bp window centered on the identified breakpoint as the left and right bounds, and used the entire y-axis consistent with the entire SV approach. Both were trained under default settings for the YOLOv5s model for 3 epochs.
 
 \begin{figure}
     \centering
     \makebox[\textwidth][c]{\includegraphics[width=1.5\textwidth]{figures/ch3/example_pileup.pdf}}
-    \caption[Sample representations of the object detection feature matrix.]{A representation of the object detection feature matrix. Grey vertical lines represent the left and right breakpoints for a candidate SV region.}
-    \label{fig:enter-label}
+    \caption[Sample representations of the object detection feature matrix.]{An example of the object detection feature matrix. Grey vertical lines represent the left and right breakpoints for a candidate SV region. "Cig" is an abbreviation for CIGAR string from the SAMfile format.}
+    \label{fig:example_pileup}
 \end{figure}
 
+\section{Results}
+
+\subsection{Summarized features and random forests are a powerful method for SV classification}
+
+To test whether our data representation of summarized features combined with random forest approaches could accurately identify and distinguish SV types we trained on a large number of long-read validated samples of structural variants in \textit{Drosophila melanogaster}. This long-read data was matched with short-read sequencing data that was used to generate feature representations from reference alignments, resulting in a training and testing set for benchmarking multiple methods on SV discovery and characterization. We find that a random forest trained on our summarized data representation achieves high levels of accuracy across multiple SV types on the true test set Figure \ref{fig:test_accuracy_forest}. One recognized caveat with this approach is the lack of substantial sample numbers for copy number variants and inversions compared to insertions and deletions, and an overall drastic imbalance of all SV types compared to control regions. This is due to three major factors; the first being that structural variants are relatively rare, and while they can span large regions of the genome, the overall composition of a given genome will largely be unaffected (control) regions. The second is that copy number variants in this instance refer to multiple duplication events, however it is possible that some CNVs are treated as insertions, this is largely a semantic difference and will change depending on how the dataset is labeled. And the final caveat is that inversions, with how drastic of an effect they have on the genome structure, are extremely rare, so they are expected to be the lowest-represented class in any given SV dataset. Multiple of these issues could be alleviated with simulated SV data, allowing for a more balanced dataset and better representation of different SV types assuming the simulated examples accurately mimic the empirical SVs.
+
+\begin{figure}
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1.5\textwidth]{figures/ch3/test_accuracy_forest.pdf}}
+    \caption[Accuracy of random forest on classifying SVs on true test set.]{Accuracy of random forest on classifying SVs on true test set. Labels are controls, deletion, insertions, copy number variants, and inversions, respectively. Values are reported as proportion of true labels (along the y-axis) that are included in a given intersection. Color indicates number of samples in a given intersection scaled to the largest number of samples in a class.}
+    \label{fig:test_accuracy_forest}
+\end{figure}
+
+
+\subsection{Random forests provide accuracy boosts when used as a filtering mechanism}
+
+We then tested whether our random forest classifier could be used as a filtering mechanism in tandem with other short-read SV callers. We tested accuracies with and without a modified LastZ \cite{chakrabortyStructuralVariantsExhibit2019} reported candidate SVs in the true test set along with varying softmax thresholds for output probabilities counting as a positive call \ref{fig:test_accuracy_forest}. For the non-candidate examples windows of 2,500bp with 1,200bp overlap step size were extracting across the entire genome and predicted on. For LastZ candidate filtering a no-thresholding approach (any probability larger than 0.2, 1/5 classes) yields the optimal tradeoff between false positive and true negative rates. Overall performance is vastly improved by using a pre-filtering approach and treating our random forest model as a genotyper, rather than a discovery method.
+
+\begin{figure}
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{figures/ch3/thresholding.pdf}}
+    \caption[Random Forest caller accuracy with and without prior candidate regions.]{Random Forest caller accuracy with and without prior candidate regions. Labels are controls, deletion, insertions, copy number variants, and inversions, respectively. Values are reported as proportion of true labels (along the y-axis) that are included in a given intersection. Color indicates number of samples in a given intersection scaled to the largest number of samples in a class.}
+    \label{fig:caller_comparison}
+\end{figure}
+
+\subsection{SV detection remains a challenging task with object detection frameworks}
+
+We attempted to use an object detection framework (YOLOv5) on an alternative feature vector representation of SVs and their breakpoints. Breakpoint identification is attractive as opposed to whole-SV detection due to its lower computational cost both in terms of creating a feature vector (less genomic information needs to be loaded into memory at any given point), but also during training/testing of a model. An additional benefit of breakpoint identification is complex SV structures, where a single breakpoint is involved with multiple SV events (a duplication followed by an inversion, for example). Though the whole-SV detection approach allows for an overall easier workflow as no breakpoint matching needs to be done, it is extremely resource intensive, often impossible to fit an entire SV in an "image" with our proposed feature vector \ref{fig:example_pileup}. We found no significant ability to detect either breakpoints or SVs using this approach, leading us to the conclusion that alternative approaches to either feature engineering, choice of model, or both are necessary to accomplish this task. 
+
+\section{Discussion}
+
+We attempted to classify and discover structural variants using random forests and state of the art object detection models with a set of long-read and short-read matched sequencing assemblies of \textit{Drosophila melanogaster}. We find that our feature engineering and random forest approach is highly accurate as a filtering mechanism for genotyping candidate SVs, however detection from no prior knowledge or candidates remains a challenging task in the field. We propose that with further work into more computationally efficient feature engineering and alternative approaches to object detection our work could be useful in the context of population-scale short-read structural variant calling, allowing for the use of SVs in population genetics analyses where it was previously infeasible. 
