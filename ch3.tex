@@ -34,6 +34,10 @@ Data for this study was collected from \textit{Drosophila melanogaster} assembli
 
 We implemented a random forest classifier implemented in scikit-learn with 500 estimators as a 5-class classifier, the output classes being control (no SV present), deletion, insertion, copy number variant (CNV), and inversion. Training data was split into a 77\%/33\% train/test split stratified by class labels for equal distribution between the sets. The random forest was fit to the resulting training data and validated on the test data before being applied to hold-out true test set.
 
+\subsection{Copy Number Variant simulation and detection}
+
+We used SECNVs (https://pubmed.ncbi.nlm.nih.gov/32153642/) to simulate samples with a random number of copies between 1 and 10 of regions sampled from the test assembly. We then trained a random forest classifier with the number of copies treated as a categorical variable. We split the simulated dataset as 70/30\% training/testing, stratified by class (copy number).
+
 \subsection{Object detection model and breakpoint identification}
 
 To detect where SVs and their breakpoints occur in a callset we attempted to use an object detection model (https://github.com/ultralytics/yolov5). This is a form of convolutional neural network that draws boundary boxes and classifies each candidate box, allowing for precise identification of an object and its location within an image. The data representation for object detection is similar to that described in Data retrieval and preprocessing, however instead of summing features as summaries we instead represented each feature as a histogram count of the feature, with the minimum and maximum values of each being standardized across the target region. An example feature map for this data type can be seen in Figure \ref{fig:example_pileup}. 
@@ -63,7 +67,7 @@ To test whether our data representation of summarized features combined with a r
 
 \subsection{Random forests provide accuracy boosts when used as a filtering mechanism}
 
-We then tested whether our random forest classifier could be used as a filtering mechanism in tandem with other short-read SV callers. We tested accuracies with and without a modified LastZ \cite{chakrabortyStructuralVariantsExhibit2019} reported candidate SVs in the true test set along with varying softmax thresholds for output probabilities counting as a positive call \ref{fig:test_accuracy_forest}. For the non-candidate examples windows of 2,500bp with 1,200bp overlap step size were extracting across the entire genome and predicted on. For LastZ candidate filtering a no-thresholding approach (any probability larger than 0.2, 1/5 classes) yields the optimal tradeoff between false positive and true negative rates. Overall performance is vastly improved by using a pre-filtering approach and treating our random forest model as a genotyper, rather than a discovery method.
+We then tested whether our random forest classifier could be used as a filtering mechanism in tandem with other short-read SV callers. We tested accuracies with and without a modified LastZ \cite{chakrabortyStructuralVariantsExhibit2019} reported candidate SVs in the true test set along with varying softmax thresholds for output probabilities counting as a positive call \ref{fig:test_accuracy_forest}. LastZ was used here for reporting candidate SVs by comparing alignments of the assemblies against the reference genome, resulting in candidate regions that are mismatched between the two. This calling method is exploited similarly in \cite{chakrabortyEvolutionGenomeStructure2021}. For the non-candidate examples windows of 2,500bp with 1,200bp overlap step size were extracting across the entire genome and predicted on. For LastZ candidate filtering a no-thresholding approach (any class membership posterior probability prediction by the random forest larger than 0.2, 1/5 classes) yields the optimal tradeoff between false positive and true negative rates\ref{fig:caller_comparison}. Overall performance is vastly improved by using a pre-filtering approach and treating our random forest model as a genotyper, rather than a discovery method.
 
 \begin{figure}
     \centering
@@ -72,9 +76,15 @@ We then tested whether our random forest classifier could be used as a filtering
     \label{fig:caller_comparison}
 \end{figure}
 
+\subsection{Simulated data provides accuracy boosts and out-of-distribution training compared to empirical-only training data}
+
+To test whether our random forest approach could detect more details than presence or absence of 
+
 \subsection{SV detection remains a challenging task with object detection frameworks}
 
-We attempted to use an object detection framework (YOLOv5) on an alternative feature vector representation of SVs and their breakpoints. Breakpoint identification is attractive as opposed to whole-SV detection due to its lower computational cost both in terms of creating a feature vector (less genomic information needs to be loaded into memory at any given point), but also during training/testing of a model. An additional benefit of breakpoint identification is complex SV structures, where a single breakpoint is involved with multiple SV events (a duplication followed by an inversion, for example). Though the whole-SV detection approach allows for an overall easier workflow as no breakpoint matching needs to be done, it is extremely resource intensive, often impossible to fit an entire SV in an "image" with our proposed feature vector \ref{fig:example_pileup}. We found no significant ability to detect either breakpoints or SVs using this approach, leading us to the conclusion that alternative approaches to either feature engineering, choice of model, or both are necessary to accomplish this task. 
+We attempted to use an object detection framework (YOLOv5) on an alternative feature vector representation of SVs and their breakpoints. Breakpoint identification is attractive as opposed to whole-SV detection due to its lower computational cost both in terms of creating a feature vector (less genomic information needs to be loaded into memory at any given point when looking for small few-bp breakpoints as opposed to potentially kilobase-scale structural variants).
+
+An additional potential benefit of breakpoint identification is complex SV structures, where a single breakpoint is involved with multiple SV events (a duplication followed by an inversion, for example). Though the whole-SV detection approach allows for an overall easier workflow as no breakpoint matching needs to be done, it is extremely resource intensive, often impossible to fit an entire SV in an "image" with our proposed feature vector \ref{fig:example_pileup}. We found no significant ability to detect either breakpoints or SVs using this approach (\~55\% detection accuracy in binary testing for presence of breakpoints), leading us to the conclusion that alternative approaches to either feature engineering, choice of model, or both are necessary to accomplish this task. 
 
 \section{Discussion}
 
