@@ -1,3 +1,18 @@
+@article{10.1093/bioinformatics/btae129,
+  title = {{{NPSV-deep}}: A Deep Learning Method for Genotyping Structural Variants in Short Read Genome Sequencing Data},
+  author = {Linderman, Michael D and Wallace, Jacob and {van der Heyde}, Alderik and Wieman, Eliza and Brey, Daniel and Shi, Yiran and Hansen, Peter and Shamsi, Zahra and Liu, Jeremiah and Gelb, Bruce D and Bashir, Ali},
+  year = {2024},
+  month = mar,
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {40},
+  number = {3},
+  eprint = {https://academic.oup.com/bioinformatics/article-pdf/40/3/btae129/57038886/btae129.pdf},
+  pages = {btae129},
+  issn = {1367-4811},
+  doi = {10.1093/bioinformatics/btae129},
+  abstract = {Structural variants (SVs) play a causal role in numerous diseases but can be difficult to detect and accurately genotype (determine zygosity) with short-read genome sequencing data (SRS). Improving SV genotyping accuracy in SRS data, particularly for the many SVs first detected with long-read sequencing, will improve our understanding of genetic variation.NPSV-deep is a deep learning-based approach for genotyping previously reported insertion and deletion SVs that recasts this task as an image similarity problem. NPSV-deep predicts the SV genotype based on the similarity between pileup images generated from the actual SRS data and matching SRS simulations. We show that NPSV-deep consistently matches or improves upon the state-of-the-art for SV genotyping accuracy across different SV call sets, samples and variant types, including a 25 \% reduction in genotyping errors for the Genome-in-a-Bottle (GIAB) high-confidence SVs. NPSV-deep is not limited to the SVs as described; it improves deletion genotyping concordance a further 1.5 percentage points for GIAB SVs (92 \%) by automatically correcting imprecise/incorrectly described SVs.Python/C++ source code and pre-trained models freely available at https://github.com/mlinderm/npsv2.}
+}
+
 @misc{abdullaMaskRCNNObject2017,
   title = {Mask {{R-CNN}} for Object Detection and Instance Segmentation on {{Keras}} and {{TensorFlow}}},
   author = {Abdulla, Waleed},
@@ -1355,6 +1370,21 @@
   urldate = {2023-12-11},
   abstract = {fastsimcoal2 extends fastsimcoal, a continuous time coalescent-based genetic simulation program, by enabling the estimation of demographic parameters under very complex scenarios from the site frequency spectrum under a maximum-likelihood framework.Other improvements include multi-threading, handling of population inbreeding, extended input file syntax facilitating the description of complex demographic scenarios, and more efficient simulations of sparsely structured populations and of large chromosomes.fastsimcoal2 is freely available on http://cmpg.unibe.ch/software/fastsimcoal2/. It includes console versions for Linux, Windows and MacOS, additional scripts for the analysis and visualization of simulated and estimated scenarios, as well as a detailed documentation and ready-to-use examples.},
   file = {C\:\\Users\\lwhit\\Zotero\\storage\\TMLZQY63\\Excoffier et al. - 2021 - fastsimcoal2 demographic inference under complex .pdf;C\:\\Users\\lwhit\\Zotero\\storage\\DG23C7SQ\\6308558.html}
+}
+
+@article{fanLikelihoodbasedFrameworkDemographic2023,
+  title = {A Likelihood-Based Framework for Demographic Inference from Genealogical Trees},
+  author = {Fan, Caoqi and Cahoon, Jordan L. and Dinh, Bryan L. and {Ortega-Del Vecchyo}, Diego and Huber, Christian and Edge, Michael D. and Mancuso, Nicholas and Chiang, Charleston W. K.},
+  year = {2023},
+  month = oct,
+  journal = {bioRxiv: The Preprint Server for Biology},
+  pages = {2023.10.10.561787},
+  doi = {10.1101/2023.10.10.561787},
+  abstract = {The demographic history of a population drives the pattern of genetic variation and is encoded in the gene-genealogical trees of the sampled alleles. However, existing methods to infer demographic history from genetic data tend to use relatively low-dimensional summaries of the genealogy, such as allele frequency spectra. As a step toward capturing more of the information encoded in the genome-wide sequence of genealogical trees, here we propose a novel framework called the genealogical likelihood (gLike), which derives the full likelihood of a genealogical tree under any hypothesized demographic history. Employing a graph-based structure, gLike summarizes across independent trees the relationships among all lineages in a tree with all possible trajectories of population memberships through time and efficiently computes the exact marginal probability under a parameterized demographic model. Through extensive simulations and empirical applications on populations that have experienced multiple admixtures, we showed that gLike can accurately estimate dozens of demographic parameters when the true genealogy is known, including ancestral population sizes, admixture timing, and admixture proportions. Moreover, when using genealogical trees inferred from genetic data, we showed that gLike outperformed conventional demographic inference methods that leverage only the allele-frequency spectrum and yielded parameter estimates that align with established historical knowledge of the past demographic histories for populations like Latino Americans and Native Hawaiians. Furthermore, our framework can trace ancestral histories by analyzing a sample from the admixed population without proxies for its source populations, removing the need to sample ancestral populations that may no longer exist. Taken together, our proposed gLike framework harnesses underutilized genealogical information to offer exceptional sensitivity and accuracy in inferring complex demographies for humans and other species, particularly as estimation of genome-wide genealogies improves.},
+  langid = {english},
+  pmcid = {PMC10592779},
+  pmid = {37873208},
+  file = {C:\Users\lwhit\Zotero\storage\349K65F6\Fan et al. - 2023 - A likelihood-based framework for demographic infer.pdf}
 }
 
 @article{fayHitchhikingPositiveDarwinian2000,
@@ -3021,6 +3051,21 @@
   file = {C:\Users\lwhit\Zotero\storage\MA9SLXLP\Li - 2011 - A new test for detecting recent positive selection.pdf}
 }
 
+@article{linkTreebasedQTLMapping2023,
+  title = {Tree-Based {{QTL}} Mapping with Expected Local Genetic Relatedness Matrices},
+  author = {Link, Vivian and Schraiber, Joshua G. and Fan, Caoqi and Dinh, Bryan and Mancuso, Nicholas and Chiang, Charleston W. K. and Edge, Michael D.},
+  year = {2023},
+  month = apr,
+  journal = {bioRxiv: The Preprint Server for Biology},
+  pages = {2023.04.07.536093},
+  doi = {10.1101/2023.04.07.536093},
+  abstract = {Understanding the genetic basis of complex phenotypes is a central pursuit of genetics. Genome-wide Association Studies (GWAS) are a powerful way to find genetic loci associated with phenotypes. GWAS are widely and successfully used, but they face challenges related to the fact that variants are tested for association with a phenotype independently, whereas in reality variants at different sites are correlated because of their shared evolutionary history. One way to model this shared history is through the ancestral recombination graph (ARG), which encodes a series of local coalescent trees. Recent computational and methodological breakthroughs have made it feasible to estimate approximate ARGs from large-scale samples. Here, we explore the potential of an ARG-based approach to quantitative-trait locus (QTL) mapping, echoing existing variance-components approaches. We propose a framework that relies on the conditional expectation of a local genetic relatedness matrix given the ARG (local eGRM). Simulations show that our method is especially beneficial for finding QTLs in the presence of allelic heterogeneity. By framing QTL mapping in terms of the estimated ARG, we can also facilitate the detection of QTLs in understudied populations. We use local eGRM to identify a large-effect BMI locus, the CREBRF gene, in a sample of Native Hawaiians in which it was not previously detectable by GWAS because of a lack of population-specific imputation resources. Our investigations can provide intuition about the benefits of using estimated ARGs in population- and statistical-genetic methods in general.},
+  langid = {english},
+  pmcid = {PMC10104234},
+  pmid = {37066144},
+  file = {C:\Users\lwhit\Zotero\storage\VVLC8ICX\Link et al. - 2023 - Tree-based QTL mapping with expected local genetic.pdf}
+}
+
 @article{liStatisticalFrameworkSNP2011,
   title = {A Statistical Framework for {{SNP}} Calling, Mutation Discovery, Association Mapping and Population Genetical Parameter Estimation from Sequencing Data},
   author = {Li, Heng},
@@ -3931,6 +3976,27 @@
   langid = {english},
   keywords = {Genome informatics,Machine learning,Software,Structural variation},
   file = {C:\Users\lwhit\Zotero\storage\V2EQNM4K\Popic et al. - 2023 - Cue a deep-learning framework for structural vari.pdf}
+}
+
+@article{popicCueDeeplearningFramework2023a,
+  title = {Cue: A Deep-Learning Framework for Structural Variant Discovery and Genotyping},
+  shorttitle = {Cue},
+  author = {Popic, Victoria and Rohlicek, Chris and Cunial, Fabio and Hajirasouliha, Iman and Meleshko, Dmitry and Garimella, Kiran and Maheshwari, Anant},
+  year = {2023},
+  month = apr,
+  journal = {Nature Methods},
+  volume = {20},
+  number = {4},
+  pages = {559--568},
+  publisher = {Nature Publishing Group},
+  issn = {1548-7105},
+  doi = {10.1038/s41592-023-01799-x},
+  urldate = {2024-03-20},
+  abstract = {Structural variants (SVs) are a major driver of genetic diversity and disease in the human genome and their discovery is imperative to advances in precision medicine. Existing SV callers rely on hand-engineered features and heuristics to model SVs, which cannot scale to the vast diversity of SVs nor fully harness the information available in sequencing datasets. Here we propose an extensible deep-learning framework, Cue, to call and genotype SVs that can learn complex SV abstractions directly from the data. At a high level, Cue converts alignments to images that encode SV-informative signals and uses a stacked hourglass convolutional neural network to predict the type, genotype and genomic locus of the SVs captured in each image. We show that Cue outperforms the state of the art in the detection of several classes of SVs on synthetic and real short-read data and that it can be easily extended to other sequencing platforms, while achieving competitive performance.},
+  copyright = {2023 The Author(s), under exclusive licence to Springer Nature America, Inc.},
+  langid = {english},
+  keywords = {Genome informatics,Machine learning,Software,Structural variation},
+  file = {C:\Users\lwhit\Zotero\storage\T4TVPATU\Popic et al. - 2023 - Cue a deep-learning framework for structural vari.pdf}
 }
 
 @article{poplinUniversalSNPSmallindel2018,
@@ -5502,26 +5568,4 @@
   pages = {57--81},
   publisher = {Elsevier},
   isbn = {2666-6510}
-}
-
-@inproceedings{ho1995random,
-  title={Random decision forests},
-  author={Ho, Tin Kam},
-  booktitle={Proceedings of 3rd international conference on document analysis and recognition},
-  volume={1},
-  pages={278--282},
-  year={1995},
-  organization={IEEE}
-}
-
-@article{scikit-learn,
-  title={Scikit-learn: Machine Learning in {P}ython},
-  author={Pedregosa, F. and Varoquaux, G. and Gramfort, A. and Michel, V.
-          and Thirion, B. and Grisel, O. and Blondel, M. and Prettenhofer, P.
-          and Weiss, R. and Dubourg, V. and Vanderplas, J. and Passos, A. and
-          Cournapeau, D. and Brucher, M. and Perrot, M. and Duchesnay, E.},
-  journal={Journal of Machine Learning Research},
-  volume={12},
-  pages={2825--2830},
-  year={2011}
 }
