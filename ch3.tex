@@ -28,6 +28,7 @@ Here we expand on concepts described in \cite{hillDeepLearningApproach2019}, whe
 \input{tables/ch3/t1}
 
 \subsection{Data retrieval and preprocessing}
+
 Data for this study was collected from \textit{Drosophila melanogaster} assemblies and sequencing runs as reported in \cite{chakrabortyEvolutionGenomeStructure2021,chakrabortyHiddenGeneticVariation2018,chakrabortyStructuralVariantsExhibit2019}. In total fourteen \textit{de novo} genome assemblies and associated structural variation callsets (detected using SVMU as described in \cite{chakrabortyStructuralVariantsExhibit2019}) were downloaded. Using the genomic coordinates obtained from the SVMU calls we prepared feature vector representations for all deletions (a segment larger than 50bp is absent compared to the reference), insertions (a segment larger than 50bp is inserted that is not present in the reference), copy number variants (defined here as any duplication), and inversions (a segment inverted along the 5' to 3' orientation as compared to the reference) as well as control regions (regions with no validated structural variant present) using the representation as described above \cite{chakrabortyHiddenGeneticVariation2018}. We then separated out one of the assemblies and callsets to serve as a hold-out test set for all analyses, hereby named the "true test set".
 
 \subsection{Random forest classifier training}
@@ -50,6 +51,27 @@ We attempted two variants of object detection: detecting the entire SV (or in th
     \caption[Sample representations of the object detection feature matrix.]{An example of the object detection feature matrix for a deletion. Grey vertical lines represent the left and right breakpoints for a candidate SV region. "Cig" is an abbreviation for CIGAR string from the SAMfile format.}
     \label{fig:example_pileup}
 \end{figure}
+
+\subsection{Syntheitc TE heterozygote creation}
+We created a set of synthetic heterozygote transposable element sets by combining reads of known homozygous reference/alternate genomes. Regions are identified and fastq entries are concatenated, then normalized down to 30x coveraage to replicate a true heterozygote sample. 
+
+\subsection{Transposable element read extraction}
+
+Transposable element (TE) candidate regions are identified by querying fastq sequences for consensus sequences matching to characterized TEs in the reference genome using bedtools. Reads from the candidate genomes are then aligned to this consensus sequence fasta, extracting the names of all reads mapping to a known TE family consensus sequence. These reads are then mapped back to the reference genome for manual inspection using IGV, resulting in a TE-read specific BAM file. 
+
+Ranges in the TE-specific alignment file were then queried for coverage to identify presence of reads in target locations. Ranges that overlap with a reference TE or are not located in euchromatin are filtered out, as well as  regions that are the same length as the average read length. All remaining regions are then expanded by 400bp in either direction and overlapping regions are collapsed, resulting in retained regions with discontinous coverage. An examination of how the size of range expansion for collapse affects true positive detection is shown in <supp 1>. 
+
+\subsection{TE breakpoint detection}
+
+Collapsed candidate regions are shrunk (why???). The candidate-associated alignments are then queried for soft-clipped reads in the region. To identify breakpoints we first identify all reads with soft-clipped ends >10bp in size and calculate where the starting position of the break is relative to the reported start coordinate of the read. The sites with the highest number of soft-clipped reads aligned to them are reported as breakpoints, assumed in this case to have a target strand duplication, resulting in two breakpoints.
+
+\subsection{Training of TE random forest}
+
+Random forests were trained using 6 synthetic heterozygous genomes (see above) created from the DSPR dataset \cite{chakrabortyStructuralVariantsExhibit2019}. All sequencing runs had a read size of 54bp post-trimming and had a final coverage of 30x. The random forest was trained on chromosomes 3L, 3R, and X, and tested on 2L and 2R, with 500 estimators.
+
+\subsection{McClintock TE callers}
+
+TE calls for competing method benchmarks were obtained by using the McClintock meta-pipeline (found at https://github.com/bergmanlab/mcclintock, v2.0.0) according to instructions for each method.
 
 \section{Results}
 
@@ -88,4 +110,8 @@ An additional potential benefit of breakpoint identification is complex SV struc
 
 \section{Discussion}
 
-We attempted to classify and discover structural variants using random forests and state of the art object detection models with a set of long-read and short-read matched sequencing assemblies of \textit{Drosophila melanogaster}. We find that our feature engineering and random forest approach is highly accurate as a filtering mechanism for genotyping candidate SVs, however detection from no prior knowledge or candidates remains a challenging task in the field. We propose that with further work into more computationally efficient feature engineering and alternative approaches to object detection our work could be useful in the context of population-scale short-read structural variant calling, allowing for the use of SVs in population genetics analyses where it was previously infeasible. 
+We attempted to classify and discover structural variants using random forests and state of the art object detection models with a set of long-read and short-read matched sequencing assemblies of \textit{Drosophila melanogaster}. We find that our feature engineering and random forest approach is highly accurate as a filtering mechanism for genotyping candidate SVs, however detection from no prior knowledge or candidates remains a challenging task in the field. Transposable element detection and characterization proved a more feasible task, largely due to the ability to utilize known TE consensus sequences.
+
+Structural variants have a large impact on genome function, however our ability to detect them is lagging behind techniques for single nucleotide polymorphisms due to the nature of commonly used short-read sequencing. While long-read sequencing can alleviate some of these issues, there is an enormous amount of existing short-read data available, and short-read remains a cost-effective option for population-scale sequencing. To better characterize structural variant both at the individual and population scale, we believe methods to utilize short-read sequencing are a valuable contribution to the study of genetics.
+
+We propose that with further work into more computationally efficient feature engineering and alternative approaches to object detection our work could be useful in the context of population-scale short-read structural variant calling, allowing for the use of SVs in population genetics analyses where it was previously infeasible.
